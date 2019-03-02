@@ -20,6 +20,7 @@ package libSvm
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"os"
 	"strconv"
@@ -274,16 +275,7 @@ func (model *Model) readHeader(reader *bufio.Reader) error {
 	return fmt.Errorf("Fail to completely read header")
 }
 
-func (model *Model) ReadModel(file string) error {
-	f, err := os.Open(file)
-	if err != nil {
-		return fmt.Errorf("Fail to open file %s\n", file)
-	}
-
-	defer f.Close() // close f on method return
-
-	reader := bufio.NewReader(f)
-
+func (model *Model) ReadFromReader(reader *bufio.Reader) error {
 	if err := model.readHeader(reader); err != nil {
 		return err
 	}
@@ -339,4 +331,22 @@ func (model *Model) ReadModel(file string) error {
 	}
 
 	return nil
+}
+
+func (model *Model) ReadModel(file string) error {
+	f, err := os.Open(file)
+	if err != nil {
+		return fmt.Errorf("Fail to open file %s\n", file)
+	}
+
+	defer f.Close() // close f on method return
+
+	reader := bufio.NewReader(f)
+
+	return model.ReadFromReader(reader)
+}
+
+func (model *Model) ReadFromBytes(data []byte) error {
+	reader := bufio.NewReader(bytes.NewReader(data))
+	return model.ReadFromReader(reader)
 }
