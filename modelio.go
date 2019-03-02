@@ -333,7 +333,7 @@ func (model *Model) ReadFromReader(reader *bufio.Reader) error {
 	return nil
 }
 
-func (model *Model) ReadModel(file string) error {
+func (model *Model) ReadFromFile(file string) error {
 	f, err := os.Open(file)
 	if err != nil {
 		return fmt.Errorf("Fail to open file %s\n", file)
