@@ -46,7 +46,7 @@ func NewModel(param *Parameter) *Model {
 func NewModelFromFile(file string) *Model {
 	param := NewParameter()
 	model := NewModel(param)
-	model.ReadModel(file)	
+	model.ReadModel(file)
 	return model
 }
 
@@ -356,3 +356,6 @@ func (model *Model) Train(prob *Problem) error {
 	return nil
 }
 
+func (model *Model) GetLabel() []int {
+	return model.label
+}
